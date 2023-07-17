@@ -1,0 +1,64 @@
+class Solution {
+public:
+
+int mergesort(int l,int m,int r,vector<int>& nums)
+{
+    int inv=0;
+    int j=m+1;
+    for(int i=l;i<=m;i++)
+    {
+        while( j<=r && nums[i] > (long long)nums[j]*2)
+        {
+            j++;
+        }
+        inv+=(j-(m+1));
+    }
+    int n=nums.size();
+    vector<int>temp;
+    int low=l,high=m+1;
+  
+    while(low<=m && high<=r)
+    {
+      if(nums[low]>nums[high])
+      {
+       
+         temp.push_back(nums[high++]);
+      }
+      else
+      {
+        temp.push_back(nums[low++]);
+          
+      }
+    }
+    while(low<=m)
+    {
+temp.push_back(nums[low++]);
+    }
+
+    while(high<=r)
+    {
+      temp.push_back(nums[high++]); 
+       
+    }
+    for(int i=l;i<=r;i++)
+    {
+        nums[i]=temp[i-l];
+    }
+    return inv;
+}
+int merge(int l,int r,vector<int>& nums)
+{
+   if(l>=r)return 0;
+   
+        int mid=(l+r)/2;
+      int inv= merge(l,mid,nums);
+        inv+=merge(mid+1,r,nums);
+        inv+=mergesort(l,mid,r,nums);
+    
+    return inv;
+}
+    int reversePairs(vector<int>& nums) {
+        return merge(0,nums.size()-1,nums);
+        
+    }
+};
